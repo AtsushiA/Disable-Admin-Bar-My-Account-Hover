@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Disable Admin Bar My Account Hover
+ * Plugin Name: NExt Disable Admin Bar Hover
  * Plugin URI: https://next-season.net
  * Description: アドミンバーのトップセカンダリメニューのマウスオーバー機能を無効化します
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: NExT-Season
  * Author URI: https://next-season.net
  * License: GPL v2 or later
@@ -19,6 +19,8 @@ class Disable_AdminBar_Hover {
     public function __construct() {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_styles'));
+        add_action('wp_footer', array($this, 'enqueue_footer_scripts'));
+        add_action('admin_footer', array($this, 'enqueue_footer_scripts'));
     }
 
     public function enqueue_admin_styles() {
@@ -34,17 +36,28 @@ class Disable_AdminBar_Hover {
         }
     }
 
+    public function enqueue_footer_scripts() {
+        if (is_admin_bar_showing()) {
+            echo '<script>' . $this->get_custom_js() . '</script>';
+        }
+    }
+
     private function get_custom_css() {
         return '
-            /* アドミンバーのトップセカンダリメニューのホバー効果を無効化 */
+            /* ホバー時の背景色変更を無効化 */
             #wpadminbar #wp-admin-bar-top-secondary > .menupop:hover > .ab-item,
             #wpadminbar #wp-admin-bar-top-secondary > .menupop.hover > .ab-item {
                 background: transparent !important;
             }
 
-            /* サブメニューを非表示 */
+            /* サブメニューをデフォルトで非表示 */
             #wpadminbar #wp-admin-bar-top-secondary .menupop > .ab-sub-wrapper {
                 display: none !important;
+            }
+
+            /* クリックで開いた場合はサブメニューを表示 */
+            #wpadminbar #wp-admin-bar-top-secondary .menupop.next-dah-open > .ab-sub-wrapper {
+                display: block !important;
             }
 
             /* ホバー時のポインターイベントを無効化 */
@@ -52,11 +65,57 @@ class Disable_AdminBar_Hover {
                 pointer-events: none !important;
             }
 
-            /* リンク自体のクリックは有効にする */
-            #wpadminbar #wp-admin-bar-top-secondary .menupop > .ab-item {
+            /* トリガーリンクとオープン時のサブメニューはクリック有効 */
+            #wpadminbar #wp-admin-bar-top-secondary .menupop > .ab-item,
+            #wpadminbar #wp-admin-bar-top-secondary .menupop.next-dah-open .ab-sub-wrapper,
+            #wpadminbar #wp-admin-bar-top-secondary .menupop.next-dah-open .ab-item {
                 pointer-events: auto !important;
             }
         ';
+    }
+
+    private function get_custom_js() {
+        return '(function() {
+    function init() {
+        var items = document.querySelectorAll(
+            "#wpadminbar #wp-admin-bar-top-secondary .menupop > .ab-item"
+        );
+        items.forEach(function(item) {
+            item.addEventListener("click", function(e) {
+                var menupop = item.closest(".menupop");
+                if (!menupop || !menupop.querySelector(".ab-sub-wrapper")) {
+                    return;
+                }
+                e.preventDefault();
+                var isOpen = menupop.classList.contains("next-dah-open");
+                document.querySelectorAll(
+                    "#wpadminbar #wp-admin-bar-top-secondary .menupop.next-dah-open"
+                ).forEach(function(m) {
+                    m.classList.remove("next-dah-open");
+                });
+                if (!isOpen) {
+                    menupop.classList.add("next-dah-open");
+                }
+            });
+        });
+
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest("#wpadminbar #wp-admin-bar-top-secondary")) {
+                document.querySelectorAll(
+                    "#wpadminbar #wp-admin-bar-top-secondary .menupop.next-dah-open"
+                ).forEach(function(m) {
+                    m.classList.remove("next-dah-open");
+                });
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();';
     }
 }
 

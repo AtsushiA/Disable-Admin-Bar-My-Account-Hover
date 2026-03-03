@@ -1,4 +1,4 @@
-# Disable Admin Bar Hover
+# NExt Disable Admin Bar Hover
 
 WordPressのアドミンバーのトップセカンダリメニュー（`#wp-admin-bar-top-secondary`）のマウスオーバー機能を無効化するプラグインです。
 
@@ -25,7 +25,7 @@ WordPressのアドミンバーのトップセカンダリメニュー（`#wp-adm
 
 1. WordPress管理画面にログイン
 2. **プラグイン** → **インストール済みプラグイン** に移動
-3. **Disable Admin Bar Hover** を見つけて「有効化」をクリック
+3. **NExt Disable Admin Bar Hover** を見つけて「有効化」をクリック
 
 ## 使い方
 
@@ -48,7 +48,7 @@ WordPressのアドミンバーのトップセカンダリメニュー（`#wp-adm
 
 ## アンインストール
 
-1. WordPress管理画面の「プラグイン」メニューから「Disable Admin Bar Hover」を無効化
+1. WordPress管理画面の「プラグイン」メニューから「NExt Disable Admin Bar Hover」を無効化
 2. 「削除」をクリックしてプラグインを完全に削除
 
 ## 技術詳細
@@ -64,6 +64,10 @@ WordPressのアドミンバーのトップセカンダリメニュー（`#wp-adm
 GPL v2 or later
 
 ## 変更履歴
+
+### 1.1.0
+- サブメニューをクリックで表示するように変更
+- アドミンバー外クリックでサブメニューを閉じる機能を追加
 
 ### 1.0.0
 - 初回リリース
