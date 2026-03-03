@@ -3,7 +3,7 @@
  * Plugin Name: NExT Disable Admin Bar Hover
  * Plugin URI: https://next-season.net
  * Description: アドミンバーのトップセカンダリメニューのマウスオーバー機能を無効化します
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: NExT-Season
  * Author URI: https://next-season.net
  * License: GPL v2 or later
