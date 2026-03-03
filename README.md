@@ -1,4 +1,4 @@
-# NExt Disable Admin Bar Hover
+# NExT Disable Admin Bar Hover
 
 WordPressのアドミンバーのトップセカンダリメニュー（`#wp-admin-bar-top-secondary`）のマウスオーバー機能を無効化するプラグインです。
 
